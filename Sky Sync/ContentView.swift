@@ -17,10 +17,14 @@ struct ContentView: View {
             Button("Print") {
                 Task {
                     await model.getCoordinates(for: model.searchLocation)
+                    await model.getWeather(in: model.location)
                 }
             }
         }
         .padding()
+//        .onChange(of: model.location.lat) { oldValue, newValue in
+//           await model.getWeather(in: model.location)
+//        }
     }
 }
 
