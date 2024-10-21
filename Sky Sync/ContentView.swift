@@ -13,9 +13,11 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            TextField("Location", text: $model.location, prompt: Text("Type a location here"))
+            TextField("Location", text: $model.searchLocation, prompt: Text("Type a location here"))
             Button("Print") {
-                print(model.location)
+                Task {
+                    await model.getCoordinates(for: model.searchLocation)
+                }
             }
         }
         .padding()
