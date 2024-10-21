@@ -37,7 +37,7 @@ final class Model {
     
     func getWeather(in place: MyLocation) async {
         fullResult = nil
-        let baseUrl = "https://api.openweathermap.org/data/2.5/weather?lat=\(place.lat)&lon=\(place.lon)&appid=7ffc5ff4685e72912c27d1c7a675d56c"
+        let baseUrl = "https://api.openweathermap.org/data/2.5/weather?lat=\(place.lat)&lon=\(place.lon)&units=metric&appid=7ffc5ff4685e72912c27d1c7a675d56c"
         
         guard let url = URL(string: baseUrl) else {
             print("invalid URL")
@@ -47,13 +47,29 @@ final class Model {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             if let decodedData = try? JSONDecoder().decode(WeatherResult.self, from: data) {
-                fullResult = WeatherResult(weather: decodedData.weather)
+                fullResult = WeatherResult(
+                    weather: decodedData.weather,
+                    main: Main(temp_min: decodedData.main.temp_min, temp_max: decodedData.main.temp_max), name: decodedData.name
+                )
+                print(fullResult)
             } else {
                 print("Error decoding data")
             }
             
         } catch {
             
+        }
+    }
+    
+    func getWeatherIcon(for description: String) -> String {
+        if description.localizedStandardContains("sun") {
+            return "sun.max"
+        } else if description.localizedStandardContains("cloud") {
+            return "cloud"
+        } else if description.localizedStandardContains("rain") {
+            return "cloud.rain"
+        } else {
+            return "swift"
         }
     }
 }
