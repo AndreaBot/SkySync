@@ -16,6 +16,8 @@ final class Model {
     var location = MyLocation(name: "", lat: 0, lon: 0)
     var fullResult: WeatherResult?
     
+    var showingFavourites = false
+    
     func getCoordinates(for place: String) async {
         let baseGeocodingLink = "https://api.openweathermap.org/geo/1.0/direct?q=\(place)&appid=7ffc5ff4685e72912c27d1c7a675d56c"
         
@@ -51,7 +53,6 @@ final class Model {
                     weather: decodedData.weather,
                     main: Main(temp_min: decodedData.main.temp_min, temp_max: decodedData.main.temp_max), name: decodedData.name
                 )
-                print(fullResult)
             } else {
                 print("Error decoding data")
             }

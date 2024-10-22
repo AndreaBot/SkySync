@@ -14,6 +14,9 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
+                Button("Save") {
+                    
+                }
                 TextField("Location", text: $model.searchLocation, prompt: Text("Type a location here"))
                 Button("Search") {
                     Task {
@@ -37,9 +40,9 @@ struct ContentView: View {
             Spacer()
         }
         .padding()
-        //        .onChange(of: model.location.lat) { oldValue, newValue in
-        //           await model.getWeather(in: model.location)
-        //        }
+        .fullScreenCover(isPresented: $model.showingFavourites) {
+            SavedLocations()
+        }
     }
 }
 
